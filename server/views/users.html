@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        th,td{
+            border:1px solid #000000;
+            width: 80px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<a href="/users/add">新增</a>欢迎您<%=user%> <a href="/users/logout">注销</a>
+<table style="border:1px solid #000000; border-collapse: collapse">
+    <tr>
+        <th>编号</th>
+        <th>账号</th>
+        <th>密码</th>
+        <th>真实姓名</th>
+        <th>状态</th>
+        <th>操作</th>
+    </tr>
+
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><a href="/users/del/">删除</a></td>
+        <td><a href="/users/toUpdate/>">修改</a></td>
+    </tr>
+</table>
+</body>
+</html>

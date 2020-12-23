@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let oUser=$('#user');
+            let oPwd=$('#pwd');
+            let oBtnReg=$('#btn_reg');
+            let oBtnLogin=$('#btn_log');
+            oBtnReg.click(function () {
+                $.ajax({
+                    url:'/users/reg',
+                    data:{username:oUser.val(),password:oPwd.val()},
+                    type:'POST',
+                    dataType:'JSON',
+                    success:function (data) {
+                        if (data.flag){
+                            alert(data.msg);
+                        }else{
+                            alert('注册失败：'+data.msg);
+                        }
+                    },
+                    error:function () {
+                        alert('请求错误！')
+                    }
+                })
+            });
+            oBtnLogin.click(function () {
+                $.ajax({
+                    url:'/users/login',
+                    data:{user:oUser.val(),pass:oPwd.val()},
+                    type:'POST',
+                    dataType:'JSON',
+                    success:function (data) {
+                        if (data.flag){
+                            alert(data.msg);
+                            window.location.href='/users/userCenter';
+                        }else{
+                            alert('登录失败：'+data.msg);
+                        }
+                    },
+                    error:function () {
+                        alert('请求错误！')
+                    }
+                })
+            });
+        })
+    </script>
+
+</head>
+<body>
+用户名：<input type="text" id="user"><br>
+密码：<input type="password" id="pwd"><br>
+<input type="button" id="btn_reg" value="注册">
+<input type="button" id="btn_log" value="登录">
+</body>
+</html>

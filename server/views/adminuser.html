@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="vue.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"> </script>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <title>Title</title>
+    <style>
+        .le li button{
+            margin-top: 10px;
+            width: 140px;
+        }
+        .Welcome a{
+            color: black;
+        }
+
+        .navbar{
+            border-bottom: black 1px solid;
+        }
+    </style>
+</head>
+<body>
+<div id="adminuser">
+    <div class="navbar navbar-duomi navbar-static-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#" id="logo">商城信息管理系统
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 le">
+                <ul class="navbar-nav" v-for="i,index in ButtonList">
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-outline-secondary" @click="Cli(index+1)">{{i.name}}</button>
+                    </li>
+                </ul>
+
+            </div>
+            <div class="col-md-10">
+                <div class="welcome" v-if="num==0">
+                    <h1>欢迎你</h1>
+                </div>
+                <div class="movies" v-if="num==1" >
+                    <div class="add">
+                        <h3>添加</h3>
+                        <input @change="change" id="uploaderInput" class="input" type="file" accept="image/*" multiple value="添加" />
+                    </div>
+                    <div>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>图片样式</th>
+                                <th>图片路由地址</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>John</td>
+                                <td>Doe</td>
+                                <td>john@example.com</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    new Vue({
+        el:"#adminuser",
+        data:{
+            message: 1,
+            num:0,
+            ButtonList:[
+                {name:"主页轮播图修改"},
+                {name:"商品总览"},
+                {name:"商品上架"},
+                {name:"订单管理"},
+                {name:"用户总览"},
+                {name:"软文总览"},
+                {name:"软文发布"}
+            ],
+            movies:[],
+            files:[]
+        },
+        methods:{
+            Cli(index){
+                this.num=index
+            },
+            //上传图片
+            change(e){
+                let files=e.target.files;
+                if (files.length==0){
+                    return;
+                }
+                let file
+                for (let i=0;i<files.length;i++){
+                    file=files[i]
+                    this.fileArr.push(file)
+                }
+                console.log(this.filleArr)
+            },
+            addArticle:function () {
+                //获取富文本内容
+                let content=$('#summernote').summernote('code')
+                //获取种类
+                this.Goodclass=this.Goodclass1+'/'+this.Goodclass2
+
+
+                let params=new FormData()
+                params.append('content',content)
+                params.append('Goodid',this.ID)
+                params.append('Goodname',this.Goodname)
+                this.fileArr.forEach((file)=>{
+                    params.append('pic',file)
+                })
+                params.append('Goodpri',this.Goodpri)
+                params.append('Goodstock',this.Goodstock)
+                params.append('Goodclass',this.Goodclass)
+                axios.post('/goods/add',params).then(result=>{
+                    if (result.data.flag==true){
+                        alert(result.data.msg+'自动刷新页面')
+                        this.reload()
+                    }
+                    if(result.data.flag==false){
+                        alert(result.data.msg+'添加失败')
+                    }
+                })
+            }
+            //从系统获取轮播图
+            Getmoies(){
+                axios.get('http://localhost:3000/adminuser/movies').then((result)=>{
+                    console.log(result)
+                    this.movies=result.data
+                })
+            },
+        },
+    })
+</script>
+</html>
